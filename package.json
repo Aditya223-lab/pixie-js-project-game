@@ -1,0 +1,24 @@
+{
+  "name": "pixie-js-game-new",
+  "version": "1.0.0",
+  "description": "my game first in pixie js",
+  "homepage": "https://github.com/Aditya223-lab/pixie-js-project-game#readme",
+  "bugs": {
+    "url": "https://github.com/Aditya223-lab/pixie-js-project-game/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Aditya223-lab/pixie-js-project-game.git"
+  },
+  "license": "ISC",
+  "author": "aditya thapa",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "start": "python -m http.server 8080",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "pixi.js": "^8.22.0"
+  }
+}
