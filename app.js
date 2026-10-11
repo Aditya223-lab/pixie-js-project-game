@@ -111,3 +111,111 @@ app.stage.addChild(char1Sprite);
 
 char1Sprite.position.set(800,400);
 
+// char1Sprite.anchor.x=0.5;
+// char1Sprite.anchor.y=0.5; 
+  // set the anchor point to the center of the sprite (default is top left corner)
+
+  char1Sprite.anchor.set(0.5, 0.5); 
+  char1Sprite.buttonMode = true;   // cursor changes to a hand when hovering over the sprite
+  char1Sprite.interactive = true;   // sprite can now be clicked on
+char1Sprite.on('pointerdown', () => {
+    console.log("sprite clicked");
+    char1Sprite.scale.x +=0.1;
+    char1Sprite.scale.y +=0.1;
+}
+);
+
+document.addEventListener('keydown', function(e) {
+    if(e.key === 'ArrowRight') {
+        char1Sprite.x += 10;
+    }
+    if(e.key === 'ArrowLeft') {
+        char1Sprite.x -= 10;
+    }
+    });
+
+const container = new PIXI.Container();
+
+const char2Sprite = new PIXI.Sprite(PIXI.Texture.from('./images/char2.png'));
+container.addChild(char2Sprite);
+
+const char3Sprite = new PIXI.Sprite(PIXI.Texture.from('./images/char3.png'));
+container.addChild(char3Sprite);
+
+app.stage.addChild(container);
+
+// Children use coordinates RELATIVE to the container, not to the screen.
+// (0,0) is the container's own top-left corner.
+char2Sprite.position.set(0, 0);
+char3Sprite.position.set(300, 0);   // 300px to the right of char2, same row
+
+// Position the container once and both sprites move together.
+// Try changing these numbers, or add  container.scale.set(0.5)  to shrink the whole group.
+container.position.set(app.screen.width - 600, 40);
+
+container.x = 200;
+
+console.log(char3Sprite.x);
+console.log(char3Sprite.getGlobalPosition());
+console.log(container.children); // getGlobalPosition() returns the sprite's position relative to the whole canvas, not just its container
+
+const particleContainer = new PIXI.ParticleContainer(1000, {   // capital P and C, and it is "Particle"
+    position: true,
+    rotation: true,
+    vertices: true,
+    tint: true,
+    uvs: true
+});
+
+// ---- Loading images with the Loader (Pixi v6) ----
+// Add everything you need, give each one a name, then call load() ONCE.
+// setup() runs after ALL files have finished downloading.
+// 
+
+// Loader.add('tileset' , './images/spritesheet.json')
+// .load(setup);
+
+// function setup(loader, resources) {
+//     const drag11TExture = PIXI.Texture.from('drag11.png');   // the name of the image in the spritesheet, not the filename
+//     const drag11Sprite = new PIXI.Sprite(drag11TExture);
+//     drag11Sprite.position.set(800, 300);
+//     drag11Sprite.scale.set(2,2);
+//     app.stage.addChild(drag11Sprite);
+// }
+
+Loader.add('tileset' , './images/spritesheet.json')
+.load(setup);
+
+function setup(loader, resources) {
+    const textures = [];
+    for(let i=1; i<=13; i++) {
+        const textures = [];
+        for(let i =1 ; i<13 ; i++) {
+            const texture = PIXI.Texture.from('drag${i}.png');
+            textures.push(texture);
+        }
+        const drag = new PIXI.AnimatedSprite(textures);
+         drag11Sprite.position.set(800, 300);
+        drag11Sprite.scale.set(2,2);
+        app.stage.addChild(drag);
+        drag.play();
+        drag.animationSpeed = 0.1;
+    }
+}
+
+const cloudsTexture = PIXI.Texture.from('./images/clouds.png');
+const cloudsSprite = new PIXI.TilingSprite(cloudsTexture
+    , app.screen.width,
+    app.screen.height,
+);
+
+cloudsSprite.tileScale.set(0.5, 0.5);   // shrink the image to half size 
+app.ticker.add(function(){
+    cloudsSprite.tilePosition.x -= 1;   // move the image to the left by 1 pixel every frame
+});
+app.stage.addChild(cloudsSprite);
+
+const sound = new  Howl({
+    src:['./sound/pelimussa.mp3'],
+})
+sound.play();
